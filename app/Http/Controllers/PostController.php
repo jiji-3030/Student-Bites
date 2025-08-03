@@ -104,13 +104,22 @@ class PostController extends Controller
     }
 
     // Delete a post
-    public function destroy(Post $post)
-    {
-        $this->authorize('delete', $post);
-        $post->delete();
+public function destroy(Post $post)
+{
 
-        return redirect()->route('posts.index')->with('success', 'Recipe deleted successfully!');
+    if (auth()->id() !== $post->user_id && !auth()->user()->hasRole('admin')) {
+        abort(403);
     }
+
+    $post->delete();
+
+    // Redirect based on role
+    if (auth()->user()->hasRole('admin')) {
+        return redirect()->route('admin')->with('success', 'Post deleted successfully.');
+    } else {
+        return redirect()->route('posts.index')->with('success', 'Your post was deleted.');
+    }
+}
     public function like(Post $post)
 {
     // Ensure the user is authenticated

@@ -6,6 +6,7 @@ use App\Models\Post;
 use App\Policies\PostPolicy;
 use Illuminate\Foundation\Support\Providers\AuthServiceProvider as ServiceProvider;
 use Illuminate\Support\Facades\Gate;
+use App\Models\User;
 
 class AuthServiceProvider extends ServiceProvider
 {
@@ -18,9 +19,12 @@ class AuthServiceProvider extends ServiceProvider
     /**
      * Register any authentication / authorization services.
      */
-    public function boot(): void
+
+    public function boot()
     {
-        $this->registerPolicies();
+        Gate::define('delete-post', function (User $user, Post $post) {
+            return $user->role === 'admin' || $user->id === $post->user_id;
+        });
     }
     protected $policies = [
         Post::class => PostPolicy::class,

@@ -67,6 +67,50 @@ class PostSeeder extends Seeder
                 'total_time' => '5 minutes',
                 'category' => '5-ingredient recipes',
             ],
+            [
+                'title' => 'Tuna Mayo Sandwich',
+                'description' => 'Protein-packed and super fast.',
+                'instructions' => [
+                    'Mix canned tuna with mayonnaise and pepper.',
+                    'Spread on bread slices.',
+                    'Add lettuce if available and enjoy.'
+                ],
+                'total_time' => '3 minutes',
+                'category' => 'quick recipes',
+            ],
+            [
+                'title' => 'Crispy Potato Wedges',
+                'description' => 'Great side or late-night snack.',
+                'instructions' => [
+                    'Cut potatoes into wedges.',
+                    'Toss in oil, salt, pepper, and paprika.',
+                    'Bake at 200°C for 30 minutes, flipping halfway.'
+                ],
+                'total_time' => '35 minutes',
+                'category' => '5-ingredient recipes',
+            ],
+            [
+                'title' => 'Spicy Ramen Noodles',
+                'description' => 'A quick and spicy noodle dish.',
+                'instructions' => [
+                    'Boil water and add instant noodles.',
+                    'Stir in the spice packet.',
+                    'Add chopped green onions and serve.'
+                ],
+                'total_time' => '10 minutes',
+                'category' => 'budget meals',
+            ],
+            [
+                'title' => 'Fruit Salad',
+                'description' => 'A refreshing snack or dessert.',
+                'instructions' => [
+                    'Chop available fruits into bite-sized pieces.',
+                    'Toss with a squeeze of lemon juice.',
+                    'Serve chilled.'
+                ],
+                'total_time' => '5 minutes',
+                'category' => 'no-cook meals',
+            ]
         ];
 
         $users = User::all();
@@ -88,7 +132,7 @@ class PostSeeder extends Seeder
             $instructionText .= ($index + 1) . '. ' . $step . "\n";
         }
 
-        return "Description: {$recipe['description']}\n\n"
+        return "{$recipe['description']}\n\n"
              . "Instructions:\n{$instructionText}\n"
              . "Total Time: {$recipe['total_time']}";
     }

@@ -3,6 +3,10 @@
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\PostController;
 use App\Http\Controllers\LikeController;
+use App\Models\User;
+use App\Models\Post;
+use Illuminate\Http\Request;
+
 
 // Public routes
 Route::get('/', [PostController::class, 'index'])->name('posts.index');
@@ -18,5 +22,22 @@ Route::middleware('auth')->group(function () {
 });
 
 Route::get('/posts/{post}', [PostController::class, 'show'])->name('posts.show');
+
+
+// Admin-only dashboard
+Route::middleware(['auth', 'role:admin'])->get('/admin', function (Request $request) {
+    $category = request()->query('category');
+
+    $posts = Post::with('user')
+        ->when($category, fn($query) => $query->where('category', $category))
+        ->latest()
+        ->get();
+
+    $users = User::all();
+    $categories = Post::distinct()->pluck('category');
+
+    return view('admin.dashboard', compact('users', 'posts', 'category', 'categories'));
+})->name('admin');
+
 
 require __DIR__.'/auth.php';
